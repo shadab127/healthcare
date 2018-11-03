@@ -32,7 +32,8 @@
         android:layout_marginTop="26dp"
         android:visibility="visible"
         tools:onClick="@android:string/ok"
-        tools:queryHint="Enter pincode or place @string/app_name" />
+        tools:queryHint="Enter pincode or place @string/app_name"
+        />
 
     <ListView
         android:id="@+id/list_view"

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -47,6 +48,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     List<place>  places = new ArrayList<place>();
     String syncquery;
     place markerobject = null;
+    boolean flag = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 android.R.layout.simple_list_item_1,
                 list);
         lv.setAdapter(arrayAdapter);
+        try{
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 markerobject = new place();
@@ -74,9 +78,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 places.clear();
                 setloc(mMap);
             }
-        });
-
-
+        });}
+        catch (Exception e){
+            Toast.makeText(getApplicationContext(), "Error occured in setonitemclicklistener"+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -88,8 +93,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     lv.setAdapter(arrayAdapter);
                     return true;
                 }
-                list.clear();
-                lv.setAdapter(arrayAdapter);
+
+                Toast.makeText(getApplicationContext(),"please select your location from list",Toast.LENGTH_LONG).show();
                 return true;
             }
 
@@ -116,7 +121,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(markerobject == null)
+                {
+                    Toast.makeText(getApplicationContext(),"please select your location from list",Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    Intent intent = new Intent(MapsActivity.this,InfoActivity.class);
+                    intent.putExtra("MyClass",markerobject);
+                   startActivity(intent);
 
+
+                }
             }
         });
 
@@ -140,7 +156,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.clear();
         // Add a marker in delhi and move the camera
         LatLng marker = new LatLng( Double.parseDouble(markerobject.longitude),Double.parseDouble(markerobject.latitude));
-        mMap.addMarker(new MarkerOptions().position(marker).title("Marker in "+markerobject.getPlace_name()));
+        mMap.addMarker(new MarkerOptions().position(marker).title("Marker in " + markerobject.getPlace_name()));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker,10));
         mMap.animateCamera(CameraUpdateFactory.newLatLng(marker));
 
@@ -151,9 +167,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.clear();
         // Add a marker in delhi and move the camera
-        LatLng marker = new LatLng( 28.7041,77.1025);
+        LatLng marker = new LatLng( 31.3260,75.5762);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker,10));
         mMap.animateCamera(CameraUpdateFactory.newLatLng(marker));
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setZoomGesturesEnabled(true);
     }
 
     synchronized public List<String> getdata(String quer){
@@ -168,86 +186,62 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Query q1 = myRef.orderByChild("place name").startAt(query).endAt(query+'\uf8ff').limitToFirst(50);
 
-        /*q1.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                place tempplace = new place(dataSnapshot.child("admin name1").getValue().toString(),
-                        dataSnapshot.child("country code").getValue().toString(),
-                        dataSnapshot.child("longitude").getValue().toString(),
-                        dataSnapshot.child("latitude").getValue().toString(),
-                        dataSnapshot.child("malaria cause").getValue().toString(),
-                        dataSnapshot.child("malaria deaths").getValue().toString(),
-                        dataSnapshot.child("malaria risk factor").getValue().toString(),
-                        dataSnapshot.child("malaria risk index").getValue().toString(),
-                        dataSnapshot.child("malnutrition cause").getValue().toString(),
-                        dataSnapshot.child("malnutrition deaths").getValue().toString(),
-                        dataSnapshot.child("malnutrition risk factor").getValue().toString(),
-                        dataSnapshot.child("malnutrition risk index").getValue().toString(),
-                        dataSnapshot.child("place name").getValue().toString(),
-                        dataSnapshot.child("population").getValue().toString(),
-                        dataSnapshot.child("postal code").getValue().toString(),
-                        dataSnapshot.child("tuberculosis cause").getValue().toString(),
-                        dataSnapshot.child("tuberculosis deaths").getValue().toString(),
-                        dataSnapshot.child("tuberculosis risk factor").getValue().toString(),
-                        dataSnapshot.child("tuberculosis risk index").getValue().toString()
-                );
-                places.add(tempplace);
-                list.add(dataSnapshot.child("place name").getValue().toString()+","+dataSnapshot.child("admin name1").getValue().toString());
+        flag = true;
 
-                if(!query.equals(syncquery))
-                {
-                    places.clear();
-                    list.clear();
-                    return;
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
+        if(flag)
+        {
+            list.add("Loading...");
+        }
 
         q1.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists()) {
+                    if(flag)
+                    {
+                        flag = false;
+                        list.clear();
 
-                if(!query.equals(syncquery))
-                {
-                    places.clear();
-                    list.clear();
-                    return;
+                    }
+                    if (!query.equals(syncquery)) {
+                        places.clear();
+                        list.clear();
+                        return;
+                    }
+                    place tempplace = new place(dataSnapshot.child("admin name1").getValue().toString(),
+                            dataSnapshot.child("country code").getValue().toString(),
+                            dataSnapshot.child("longitude").getValue().toString(),
+                            dataSnapshot.child("latitude").getValue().toString(),
+                            dataSnapshot.child("malaria cause").getValue().toString(),
+                            dataSnapshot.child("malaria deaths").getValue().toString(),
+                            dataSnapshot.child("malaria risk factor").getValue().toString(),
+                            dataSnapshot.child("malaria risk index").getValue().toString(),
+                            dataSnapshot.child("malnutrition cause").getValue().toString(),
+                            dataSnapshot.child("malnutrition deaths").getValue().toString(),
+                            dataSnapshot.child("malnutrition risk factor").getValue().toString(),
+                            dataSnapshot.child("malnutrition risk index").getValue().toString(),
+                            dataSnapshot.child("place name").getValue().toString(),
+                            dataSnapshot.child("population").getValue().toString(),
+                            dataSnapshot.child("postal code").getValue().toString(),
+                            dataSnapshot.child("tuberculosis cause").getValue().toString(),
+                            dataSnapshot.child("tuberculosis deaths").getValue().toString(),
+                            dataSnapshot.child("tuberculosis risk factor").getValue().toString(),
+                            dataSnapshot.child("tuberculosis risk index").getValue().toString()
+                    );
+                    places.add(tempplace);
+                    list.add(dataSnapshot.child("place name").getValue().toString() + "," + dataSnapshot.child("admin name1").getValue().toString()
+                    );
+                    final ListView lv = (ListView) findViewById(R.id.list_view);
+                    final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(MapsActivity.super.getApplicationContext(),
+                            android.R.layout.simple_list_item_1,
+                            list);
+                    lv.setAdapter(arrayAdapter);
                 }
-               place tempplace = new place(dataSnapshot.child("admin name1").getValue().toString(),
-                        dataSnapshot.child("country code").getValue().toString(),
-                        dataSnapshot.child("longitude").getValue().toString(),
-                        dataSnapshot.child("latitude").getValue().toString(),
-                        dataSnapshot.child("malaria cause").getValue().toString(),
-                        dataSnapshot.child("malaria deaths").getValue().toString(),
-                        dataSnapshot.child("malaria risk factor").getValue().toString(),
-                        dataSnapshot.child("malaria risk index").getValue().toString(),
-                        dataSnapshot.child("malnutrition cause").getValue().toString(),
-                        dataSnapshot.child("malnutrition deaths").getValue().toString(),
-                        dataSnapshot.child("malnutrition risk factor").getValue().toString(),
-                        dataSnapshot.child("malnutrition risk index").getValue().toString(),
-                        dataSnapshot.child("place name").getValue().toString(),
-                        dataSnapshot.child("population").getValue().toString(),
-                        dataSnapshot.child("postal code").getValue().toString(),
-                        dataSnapshot.child("tuberculosis cause").getValue().toString(),
-                        dataSnapshot.child("tuberculosis deaths").getValue().toString(),
-                        dataSnapshot.child("tuberculosis risk factor").getValue().toString(),
-                        dataSnapshot.child("tuberculosis risk index").getValue().toString()
-                        );
-                places.add(tempplace);
-                list.add(dataSnapshot.child("place name").getValue().toString()+","+dataSnapshot.child("admin name1").getValue().toString()
-                );
-                final ListView lv= (ListView) findViewById(R.id.list_view);
-                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(MapsActivity.super.getApplicationContext(),
-                        android.R.layout.simple_list_item_1,
-                        list);
-                lv.setAdapter(arrayAdapter);
-
+                else{
+                    list.clear();
+                    Toast.makeText(getApplicationContext(),"Data not found",Toast.LENGTH_SHORT).show();
+                    list.add("data not found");
+                }
 
             }
 
@@ -269,13 +263,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Toast.makeText(getApplicationContext(),"database error occured",Toast.LENGTH_SHORT).show();
             }
         }
 
         );
-
-
         return list;
     }
 }

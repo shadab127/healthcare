@@ -1,12 +1,43 @@
 package com.example.shadabkhan.healthcare;
 
-public class place {
+import android.icu.text.Replaceable;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+import static java.lang.System.in;
+
+public class place implements Parcelable {
     String admin_name1,country_code,
     latitude,longitude,malaria_cause,malaria_deaths,malaria_risk_factor
             ,malaria_risk_index,malnutrition_cause,
     malnutrition_deaths,malnutrition_risk_factor,malnutrition_risk_index,
     place_name,population,postal_code,tuberculosis_cause,
     tuberculosis_deaths,tuberculosis_risk_factor,tuberculosis_risk_index;
+
+    public place(Parcel in){
+        admin_name1=in.readString();
+        country_code=in.readString();
+        latitude=in.readString();
+        longitude=in.readString();
+        malaria_cause=in.readString();
+        malaria_deaths=in.readString();
+        malaria_risk_factor=in.readString();
+        malaria_risk_index=in.readString();
+        malnutrition_cause=in.readString();
+        malnutrition_deaths=in.readString();
+        malnutrition_risk_factor=in.readString();
+        malnutrition_risk_index=in.readString();
+        place_name=in.readString();
+        population=in.readString();
+        postal_code=in.readString();
+        tuberculosis_cause=in.readString();
+        tuberculosis_deaths=in.readString();
+        tuberculosis_risk_factor=in.readString();
+        tuberculosis_risk_index=in.readString();
+    }
+
     public place(){
     }
     public place(String admin_name1, String country_code, String latitude,
@@ -112,4 +143,45 @@ public class place {
     public String getTuberculosis_risk_index() {
         return tuberculosis_risk_index;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+
+        parcel.writeString(admin_name1);
+        parcel.writeString(country_code);
+        parcel.writeString(latitude);
+        parcel.writeString(longitude);
+        parcel.writeString(malaria_cause);
+        parcel.writeString(malaria_deaths);
+        parcel.writeString(malaria_risk_factor);
+        parcel.writeString(malaria_risk_index);
+        parcel.writeString(malnutrition_cause);
+        parcel.writeString(malnutrition_deaths);
+        parcel.writeString(malnutrition_risk_factor);
+        parcel.writeString(malnutrition_risk_index);
+        parcel.writeString(place_name);
+        parcel.writeString(population);
+        parcel.writeString(postal_code);
+        parcel.writeString(tuberculosis_cause);
+        parcel.writeString(tuberculosis_deaths);
+        parcel.writeString(tuberculosis_risk_factor);
+        parcel.writeString(tuberculosis_risk_index);
+    }
+    public static final Parcelable.Creator<place>  CREATOR= new Parcelable.Creator<place> ()
+     {
+      public place createFromParcel(Parcel in)
+        {
+            return new place(in);
+        }
+        public  place[] newArray(int size)
+        {
+            return new place[size];
+        }
+    };
 }

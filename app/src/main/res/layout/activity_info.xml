@@ -1,9 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InfoActivity">
+    android:scrollbars="vertical"
+    tools:context="com.example.shadabkhan.healthcare.MapsActivity">
 
-</android.support.constraint.ConstraintLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginTop="100dp"
+                            android:text="Malaria"
+                            android:textColor="@android:color/black"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textview2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/textview"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginTop="113dp"
+                            android:text="Tuberculosis "
+                            android:textColor="@android:color/black"
+                            android:textSize="24sp" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/textview2"
+                            android:layout_alignStart="@+id/textview"
+                            android:layout_alignRight="@+id/textview"
+                            android:layout_marginStart="142dp"
+                            android:scaleY="2" />
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/textview2"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginTop="121dp"
+                            android:text="Malnutrition"
+                            android:textColor="@android:color/black"
+                            android:textSize="24sp" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar2"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignEnd="@+id/progressBar"
+                            android:layout_alignRight="@+id/textview2"
+                            android:layout_alignBottom="@+id/progressBar"
+                            android:layout_marginStart="1dp"
+                            android:layout_marginEnd="-1dp"
+                            android:layout_marginRight="-195dp"
+                            android:layout_marginBottom="-140dp"
+                            android:layout_toEndOf="@+id/textview2"
+                            android:scaleY="2" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar3"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/progressBar2"
+                            android:layout_marginStart="11dp"
+                            android:layout_marginLeft="11dp"
+                            android:layout_marginBottom="-155dp"
+                            android:layout_toEndOf="@+id/textView3"
+                            android:layout_toRightOf="@+id/textView3"
+                            android:scaleY="2" />
+
+                        <TextView
+                            android:id="@+id/textview4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/progressBar2"
+                            android:layout_below="@+id/progressBar"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="21dp"
+                            android:layout_marginTop="23dp"
+                            android:layout_marginBottom="19dp"
+                            android:text="TextView"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textview5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="81dp"
+                            android:layout_above="@+id/progressBar3"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="17dp"
+                            android:layout_marginEnd="-218dp"
+                            android:layout_marginBottom="23dp"
+                            android:layout_toStartOf="@+id/progressBar2"
+                            android:text="TextView"
+
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textview6"
+                            android:layout_width="351dp"
+                            android:layout_height="57dp"
+                            android:layout_below="@+id/textView3"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="TextView"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/textview7"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginStart="18dp"
+                            android:layout_marginTop="21dp"
+
+                            android:text="TextView"
+
+                            android:textSize="12sp" />
+
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/piechart"
+                            android:layout_width="match_parent"
+                            android:layout_height="500dp"
+                            android:layout_below="@+id/textview6"
+                            tools:layout_editor_absoluteX="45dp"
+                            tools:layout_editor_absoluteY="28dp" />
+                </RelativeLayout>
+
+        </ScrollView>
+
+</RelativeLayout>
