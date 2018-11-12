@@ -181,7 +181,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final String query = quer.toLowerCase();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        DatabaseReference myRef = database.getReferenceFromUrl("https://healthcare-1540558185483.firebaseio.com");
+        DatabaseReference myRef = database.getReferenceFromUrl("enter your firebase database address");
 
 
         Query q1 = myRef.orderByChild("place name").startAt(query).endAt(query+'\uf8ff').limitToFirst(50);
