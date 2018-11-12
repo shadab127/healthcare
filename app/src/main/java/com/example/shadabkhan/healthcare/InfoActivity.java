@@ -17,6 +17,9 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.io.Serializable;
 import java.io.StreamTokenizer;
@@ -28,6 +31,13 @@ public class InfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+       // DatabaseReference myRef = database.getReferenceFromUrl("https://experiment-a6425.firebaseio.com");
+
+
+
 
         place markerobject = (place) getIntent().getParcelableExtra("MyClass");
         setTitle(""+markerobject.place_name+","+markerobject.admin_name1);
@@ -64,10 +74,6 @@ public class InfoActivity extends AppCompatActivity {
         t6.setText("Risk factor="+c+"%\n"+"Vulnerability="+String.format("%.3f",vulMnut/2));
 t7.setText("Risk Factor:The chances of being infected by this disease\nVulnerability: The chances of demise of patient suffering from the disease");
     SetPieChart((Double.parseDouble(causeMal)),Double.parseDouble(causeTB),Double.parseDouble(causeMnut));
-
-
-
-
 
     }
     public void choosecolor(int riskp,ProgressBar pb1)
